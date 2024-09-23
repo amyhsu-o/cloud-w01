@@ -30,3 +30,10 @@ function sumToN1(n) {
     if (n > 0) return n + sumToN1(n-1);
     else return 0;
 }
+
+function sumToN2(n) {
+    // solution 2: use .keys() of array with (n+1) elements to get array [0, 1, 2, ..., n]
+    let arr = new Array(n+1);
+    arr = Array.from(arr.keys());
+    return sum(arr);
+}
