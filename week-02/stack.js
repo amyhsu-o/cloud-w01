@@ -18,14 +18,20 @@ export default class Stack {
 
     // 移除並回傳 stack 頂部的元素
     pop() {
-        if (!this.isEmpty()) return this.#items.pop();
-        else return "(stack is empty)";
+        if (!this.isEmpty()) {
+            return this.#items.pop();
+        } else {
+            return "(stack is empty)";
+        }
     }
 
     // 回傳 stack 頂部的元素，但不移除它
     peek() {
-        if (!this.isEmpty()) return this.#items.at(-1);
-        else return "(stack is empty)";
+        if (!this.isEmpty()) {
+            return this.#items.at(-1);
+        } else {
+            return "(stack is empty)";
+        }
     }
 
     // 檢查 stack 是否為空

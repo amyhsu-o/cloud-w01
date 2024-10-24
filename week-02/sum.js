@@ -6,8 +6,11 @@ function sum(ary) {
 
 function sum1(ary) {
     // solution 1: recursion
-    if (ary.length > 0) return ary[0] + sum1(ary.slice(1));
-    else return 0;
+    if (ary.length > 0) {
+        return ary[0] + sum1(ary.slice(1));
+    } else {
+        return 0;
+    }
 }
 
 function sum2(ary) {
@@ -27,8 +30,11 @@ function sumToN(n) {
 
 function sumToN1(n) {
     // solution 1: recursion
-    if (n > 0) return n + sumToN1(n - 1);
-    else return 0;
+    if (n > 0) {
+        return n + sumToN1(n - 1);
+    } else {
+        return 0;
+    }
 }
 
 function sumToN2(n) {
