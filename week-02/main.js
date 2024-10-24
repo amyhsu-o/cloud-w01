@@ -1,4 +1,4 @@
-import Stack from './stack.js';
+import Stack from "./stack.js";
 
 let stack = new Stack();
 
@@ -24,16 +24,16 @@ stackInfo(stack);
 
 // check: .pop()
 console.log(`pop ${stack.pop()}`);
-stackInfo(stack)
+stackInfo(stack);
 
 // check: .pop()，當 pop 次數超過元素個數
 console.log(`pop ${stack.pop()}`);
 console.log(`pop ${stack.pop()}`);
-stackInfo(stack)
+stackInfo(stack);
 
 stack.push(1);
 stack.push(3);
-stackInfo(stack)
+stackInfo(stack);
 
 // check: .clear()
 stack.clear();
