@@ -6,10 +6,10 @@ function sum(ary) {
 
 function sum1(ary) {
     // solution 1: recursion
-    if (ary.length > 0) {
-        return ary[0] + sum1(ary.slice(1));
-    } else {
+    if (ary.length <= 0) {
         return 0;
+    } else {
+        return ary[0] + sum1(ary.slice(1));
     }
 }
 
