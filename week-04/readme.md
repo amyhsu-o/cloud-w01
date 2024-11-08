@@ -20,7 +20,7 @@
 
 ## 1. 建立 EC2 instance
 
-（Public IPv4 address: 13.125.127.173）
+（Public IPv4 address: [3.34.146.163](http://3.34.146.163/)）
 
 <img src="assets/ec2_step1.png" alt="ec2 setup 1">
 
