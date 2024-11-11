@@ -10,7 +10,6 @@
     -   [問題六：沒有訪問權限](#問題六沒有訪問權限)
 -   [Linux 指令筆記](#linux-指令筆記)
 -   [心得](#心得)
--   [參考資料](#參考資料)
 
 ## 基本資訊
 
@@ -142,7 +141,7 @@ $ curl localhost
 
 6.  指令：`hexdump -C /var/log/system/largefile*`
 
-    利用 `hexdump` 將 largefile 的二進位檔案以十六進位輸出， **檢視 largefile 是否含有有意義的文字內容** 。
+    利用 `hexdump` 將 largefile 的二進位檔案以十六進位與 ASCII 輸出成比較能夠讀懂的形式， **檢視 largefile 是否含有有意義的文字內容** 。
 
     <img src="./assets/screenshot_2-06.png">
 
@@ -393,6 +392,160 @@ $ curl localhost
 
 ## Linux 指令筆記
 
-## 心得
+-   `systemctl`
 
-## 參考資料
+    `systemd` 是多數 Linux 發行版中的 init 系統，會在主機 boot 後首先作為 pid = 1 被啟動，並負責管理系統服務。
+
+    將服務交由 `systemd` 管理的好處包含：
+
+    1. 透過 `systemctl` 指令，可以對服務有統一的操作管理介面。
+    2. 可以設定由 `systemd` 在主機 boot 後即自動啟動服務，不需要手動啟動。
+
+    常用指令：
+
+    （在 `systemd` 中一個服務被稱做一個 unit。）
+
+    -   啟動服務
+
+        ```bash
+        $ sudo systemctl start <unit>
+        ```
+
+    -   關閉服務
+
+        ```bash
+        $ sudo systemctl stop <unit>
+        ```
+
+    -   重新載入服務的設定
+
+        ```bash
+        $ sudo systemctl reload <unit>
+        ```
+
+    -   主機 boot 後自動啟動服務
+
+        ```bash
+        $ sudo systemctl enable <unit>
+        ```
+
+    -   主機 boot 後不要自動啟動服務
+
+        ```bash
+        $ sudo systemctl disable <unit>
+        ```
+
+    -   查看服務的狀態
+
+        ```bash
+        $ systemctl status <unit>
+        ```
+
+    -   查看由 systemd 管理，且處於 active 狀態的所有服務
+
+        ```bash
+        $ systemctl systemctl list-units
+        ```
+
+    參考資料：[How To Use Systemctl to Manage Systemd Services and Units | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units)
+
+-   `journalctl`
+
+    `journalctl` 提供對由 `systemd` 管理的服務的所有 log 的存取、查詢功能。
+
+    像是在 `systemctl status <unit>` 中會因為時間、容量、是否為同一次啟動等因素而只顯示出近期部分的 log，雖然可以幫助了解當下狀況，但對於需要分析研究過去發生的狀況時就有所不足。相較於此 `journalctl` 則沒有這些限制，能夠取得更完整的 log，或是更針對需求查詢出需要的 log。
+
+    常用篩選機制：
+
+    -   `-b <offset/id>`：查詢指定的 boot
+
+        -   offset 以本次 boot 為 0、前一次為 -1、在前一次為 -2，以此類推
+        -   詳細的 id、offset、boot 的時間資訊可以透過 `--list-boots` 查看
+
+    -   `--since "time"`、`--until "time"`：查詢指定時間範圍
+
+    -   `-u <unit>`：查詢指定服務
+
+    -   `-p <priority>`、`-p <priority from>..<priority to>`：查詢指定的優先級別
+
+        -   "emerg" (0), "alert" (1), "crit" (2), "err" (3), "warning" (4), "notice" (5), "info" (6), "debug" (7)
+        -   如果只提供一個 priority，則會查出小於等於該 priority 的所有結果。
+
+    參考資料：[Using journalctl - The Ultimate Guide To Logging](https://www.loggly.com/ultimate-guide/using-journalctl/)
+
+-   `df <filesystems>`
+
+    `df` 可以用來查詢檔案系統的空間使用狀況、掛載位置。
+
+    參考資料：[df command in Linux with Examples - GeeksforGeeks](https://www.geeksforgeeks.org/df-command-linux-examples/)
+
+-   `du <directory/file>`：
+
+    `du` 可以用來查詢目錄、檔案的容量大小。
+
+    -   `-a`：呈現所有目錄、檔案的資訊，會向下到每一層
+    -   `-d <depth>`：向下呈現所有目錄、檔案的資訊到指定層數後，以彙總容量呈現
+    -   `-s`：呈現第一層目錄、檔案的彙總容量
+    -   `-c`：呈現容量的加總結果
+    -   `-B<size>`：指定容量的呈現單位
+
+    參考資料：[du Command in LINUX - GeeksforGeeks](https://www.geeksforgeeks.org/du-command-linux/?ref=header_outind)
+
+-   `file <filename>`
+
+    `file` 可以用來查詢檔案類型。
+
+    參考資料：[file command in Linux with examples](https://www.geeksforgeeks.org/file-command-in-linux-with-examples/?ref=header_outind)
+
+-   `hexdump`
+
+    `hexdump` 可以用來將二進位檔案轉成十六進位與 ASCII 輸出，幫助理解二進位檔案的內容。
+
+    指令後面帶不同的參數可以指定輸出的格式，例如 `-C` 就是同時以十六進位與 ASCII 格式輸出。
+
+    參考資料：[hexdump command in Linux with examples](https://www.geeksforgeeks.org/hexdump-command-in-linux-with-examples/?ref=header_outind)
+
+-   `ss`
+
+    ss 是指 socket statistics，用來查詢 network socket 的相關資訊。
+
+    常用篩選機制：
+
+    -   `-t`：查詢 TCP socket
+    -   `-u`：查詢 UDP socket
+    -   `-l`：查詢最近有處於監聽狀態的 socket
+    -   `-e`：查詢已建立起來的連線
+    -   `sport = :<port>`: 查詢指定的 port
+
+    -   `-s`：提供匯總資訊
+
+    參考資料：[ss command in linux - GeeksforGeeks](https://www.geeksforgeeks.org/ss-command-in-linux/?ref=header_outind)
+
+-   `iptables`
+
+    管理防火牆規則。
+
+    指令格式：
+
+    ```bash
+    $ iptables [--table TABLE] -A/-C/-D... CHAIN rule
+    ```
+
+    常用動作：
+
+    -   `-A`：新增規則
+    -   `-D`：刪除規則
+    -   `-C`：檢查規則是否存在
+    -   `-R`：以新規則取代原規則
+    -   `-L`：列出目前所有規則
+
+    常用 rule 參數：
+
+    -   `-p`：protocol
+    -   `-s`：source
+    -   `-d`：destination
+    -   `-j`：target
+
+    參考資料：[iptables command in Linux with Examples - GeeksforGeeks](https://www.geeksforgeeks.org/iptables-command-in-linux-with-examples/?ref=header_outind)
+
+## 心得
